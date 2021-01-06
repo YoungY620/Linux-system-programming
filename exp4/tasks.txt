@@ -1,0 +1,95 @@
+实验内容
+实验1. System V消息队列
+
+消息的创建、发送和接收。使用系统调用msgget()，msgsnd()，msgrev()及msgctl()编写一个长度为１k的消息（在这里我们没有对消息中的字符串进行初始化，里面存放的是垃圾）发送和接收的程序。
+
+参考程序：
+
+
+
+messageserver.c
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/msg.h>
+#include <sys/ipc.h>
+
+#define MSGKEY 99
+
+struct msgform {
+	int mtype;
+	char mtext[1000];
+}msg;
+
+int  msgqid;
+
+void server() {
+	msgqid=msgget(MSGKEY, 0777|IPC_CREAT);	/*创建KEY为99的消息队列*/
+	do{
+		msgrcv(msgqid, &msg, sizeof(struct msgform), 0, 0);   /*接收消息*/
+		printf("server received\n");
+	}while(msg.mtype!=1);
+	msgctl(msgqid, IPC_RMID, 0);			/*删除消息队列*/
+	exit(0);
+}
+
+main(){  
+	server();
+}
+
+
+messageclient.c
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/msg.h>
+#include <sys/ipc.h>
+
+#define MSGKEY 99 
+
+struct msgform {  
+	int mtype;
+	char mtext[1000];
+}msg;
+
+int msgqid;
+
+void client() {
+	int i;
+	msgqid=msgget(MSGKEY, 0777);		/*打开KEY为99的消息队列*/
+	for(i=10; i>=1; i--) {
+		msg.mtype=i;
+		printf("client sent\n");
+		msgsnd(msgqid, &msg, sizeof(struct msgform), 0);	/*发送消息*/
+	}
+	exit(0);
+}
+
+main(){ 
+	client( );
+}
+参考程序说明：
+
+程序messageclient.c和messageserver.c分别用于消息的发送与接收。
+server建立一个 Key 为99的消息队列，等待其它进程发来的消息。当遇到类型为1的消息，则作为结束信号，取消该队列，并退出server。server每接收到一个消息后显示一句“(server)received。”
+client使用 key为99的消息队列，先后发送类型从10到1的消息，然后退出。最后一个消息，即是 server端需要的结束信号。client 每发送一条消息后显示一句 “(client)sent”。
+实验内容
+在父进程中创建一个消息队列，用fork创建一个子进程，在子进程中将一条消息传送至消息队列，父进程接受队列的消息，并将消息在终端显示。
+
+实验2. 生产者消费者问题
+
+两个进程通过共享内存传递数据（可以自定义一个struct）。共享内存大小一定（只能存N个struct）。生产者进程负责将数据存入共享内存，消费者负责从共享内存中取出数据。使用信号量实现生产者消费者问题的解决。
+
+实验3. 多进程的模式匹配
+
+本实验难度较难。
+
+/usr/include下面存放的是所有系统调用和库函数的头文件。试图编写一个程序，能够根据用户给出的关键字，在所有/usr/include下的头文件中匹配该关键字。如果找到，则返回包含这个关键字的文件名。
+
+要求：主进程负责生成n个子进程（建议10个），子进程分别去所有文件的一个子集（1/n个文件）中进行模式匹配，并将找到的结果传给主进程——找到一个发送一个。一旦主进程收到任何子进程返回的结果，立即在终端上打印出来。
+
+实验报告
+列出调试通过程序的清单，分析运行结果。
+给出必要的程序设计思路和方法（最好绘出流程图）。
+列出自己特色和创新性（加分点）。
