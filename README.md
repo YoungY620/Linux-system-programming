@@ -12,6 +12,10 @@ Before compile the client, install "curses"
 ```
 sudo apt install lib32ncurses5-dev
 ```
+another stupid but helpful way for CentOS:
+```
+yum install *curses*
+```
 run clients in another two terminals:
 ```
 cd assignment3
