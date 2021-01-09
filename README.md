@@ -27,8 +27,8 @@ Following is the image if succeed :
 |__HP:2__|
    |02|
 
-                            *
-                                *
+                        *
+                *
                          __|02|__
                         |__HP:2__|
 ```

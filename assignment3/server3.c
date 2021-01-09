@@ -1,5 +1,5 @@
 /*
-    implement receive&send and decode&encode a frame from server to client
+    只限于两个玩家的实现
  */
 /*
 	client:

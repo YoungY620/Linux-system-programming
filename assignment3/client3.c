@@ -1,6 +1,4 @@
-/*
-    implement receive(&send) and decode a frame from server
-    
+/*    
     // possible cmd:
     // WAIT 忽略tty输入(phase = conn_wait)直到接到第一个POST
     // POST 解除wait状态，重绘场景。
@@ -142,6 +140,7 @@ void std_exit(int flg, int sock_fd, int epollfd){
     tcsetattr(0,TCSAFLUSH,&init_tty);
     close(0);   // 一定要在设置完tssetattr之后再close，否则设置无效
     clear();
+    getch();
     endwin();			/* reset the tty etc	游戏退出时调用*/
     exit(flg);
 }
@@ -239,8 +238,6 @@ int main(int argc, char **argv){
         if(phase == play){
             // print_sts(&sts);
             draw_status(&sts, NULL, logfd);
-        }else if(phase == closed){
-            show_end("the end");
         }
     }
 
