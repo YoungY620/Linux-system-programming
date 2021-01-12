@@ -28,6 +28,7 @@ int main(int ac, char *av[]){
         client();
         return 0;
     }else{
+        sleep(12);
         server();
         if(-1==wait(NULL)){
             perror("wait");
@@ -61,9 +62,9 @@ void client() {
 		msg.mtype=i;
 		// printf("client sent\n");
 		printf("client sent ptr:%ld, mtype:%d, text:%s\n", (long)&msg, msg.mtype, msg.mtext);
-		if(-1==msgsnd(msgqid, &msg, sizeof(struct msgform), 0)){
+		if(-1==msgsnd(msgqid, &msg, sizeof(struct msgform), IPC_NOWAIT)){
             perror("msgsnd");
-            exit(EXIT_FAILURE);
+            // exit(EXIT_FAILURE);     
         };	/*发送消息*/
         sleep(1);
     }
