@@ -264,8 +264,8 @@ void init_mv_bullets_timer(){
 	}
 	itval.it_value.tv_sec = 1;
 	itval.it_value.tv_usec = 0;
-	itval.it_interval.tv_sec = 1;
-	itval.it_interval.tv_usec = 0;
+	itval.it_interval.tv_sec = 0;
+	itval.it_interval.tv_usec = 200000;
 	if(-1 == setitimer(ITIMER_REAL, &itval, NULL)){
 		perror("setitimer");
 		exit(EXIT_FAILURE);

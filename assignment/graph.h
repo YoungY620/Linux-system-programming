@@ -100,6 +100,7 @@ int erase_plane(int l,int c){
     // refresh();			/* update the screen	*/
     return 0;
 }
+
 int draw_status(struct status *sts, struct status *old, int log_fd){
     clear();
     standend();
@@ -123,6 +124,7 @@ int draw_status(struct status *sts, struct status *old, int log_fd){
     }
     return 0;
 }
+
 void show_end(const char *msg){
     clear();
     int l = (SCREEN_L/2);
@@ -132,4 +134,5 @@ void show_end(const char *msg){
     getchar();
     refresh();
 }
+
 #endif

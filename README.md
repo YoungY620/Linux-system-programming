@@ -4,26 +4,20 @@ including exercises of Linux system call, network programming, and an assignment
 # Useage
 To try out the game:
 
-```bash
-cd assignment3
-cc server3.c -o server
-./server 8080
+```shell
+cd assignment
 ```
 
-PS：请不要在后台运行 server，因为会有用于观察行为的日志输出
+Launch a server:
 
-Before compile the client, install "curses"
-
-```bash
-sudo apt install lib32ncurses5-dev
+```shell
+make run-server
 ```
 
-run clients in another two terminals:
+In another 2 terminal, open the client and play!
 
-```bash
-cd assignment3
-cc client3.c -o client -lcurses
-./client 127.0.0.1 8080
+```shell
+make play
 ```
 
 Following is the image if succeed :
@@ -37,7 +31,8 @@ Following is the image if succeed :
                          __|02|__
                         |__HP:2__|
 ```
-It is designed to control with "WSAD", and shoot with space.
+
+It is designed to control with "WSAD", and shoot with SPACE.
 
 # Big Warnning!
 
