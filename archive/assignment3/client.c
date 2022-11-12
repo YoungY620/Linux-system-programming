@@ -115,7 +115,7 @@ void send_opt(int fd, int sock_fd, enum client_phase *phase){
         perror("tty read");
         exit(EXIT_FAILURE);
     }
-    if(FILE_LOG) dprintf(logfd, "%c %d\n",ttybuf,(int)ttybuf);
+    if(WRITE_LOG_TO_FILE) dprintf(logfd, "%c %d\n",ttybuf,(int)ttybuf);
     if(*phase == play){
         if (ttybuf == 'a' || ttybuf == 'A'){
             write(sock_fd, "OPT L", 5);
@@ -164,10 +164,10 @@ void handle_msg(struct status *sts, int sock_fd, int epollfd, enum client_phase 
 
     if(strcmp(cmd, "WAIT") == 0){
         *phase = conn_wait;
-        if(FILE_LOG) dprintf(logfd, "wait %s %s\n",cmd, content);
+        if(WRITE_LOG_TO_FILE) dprintf(logfd, "wait %s %s\n",cmd, content);
     }else if(strcmp(cmd, "EXIT") == 0){
         *phase = closed;
-        if(FILE_LOG) dprintf(logfd, "exit %s %s\n",cmd, content);
+        if(WRITE_LOG_TO_FILE) dprintf(logfd, "exit %s %s\n",cmd, content);
 
         show_end((strcmp(content, "3")==0)?"You win!":"You're dead!");
     }else if(strcmp(cmd,"POST") == 0){
@@ -176,7 +176,7 @@ void handle_msg(struct status *sts, int sock_fd, int epollfd, enum client_phase 
 
         if(*phase == conn_wait) 
             *phase = play;
-        if(FILE_LOG) dprintf(logfd, "post %s %s\n",cmd, content);
+        if(WRITE_LOG_TO_FILE) dprintf(logfd, "post %s %s\n",cmd, content);
         sscanf(content, "%s %s", tok, o_tok);
         str_to_data(content+strlen(tok)+strlen(o_tok)+2, sts, atoi(tok), atoi(o_tok));
     }
@@ -203,7 +203,7 @@ int main(int argc, char **argv){
         exit(EXIT_FAILURE);
     }
 
-    if(FILE_LOG){
+    if(WRITE_LOG_TO_FILE){
         time_t tt;    //typedef long time_t;   
         struct tm *t;
         char log_filename[100];
